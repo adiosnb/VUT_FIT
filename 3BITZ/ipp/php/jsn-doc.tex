@@ -1,0 +1,81 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[czech]{babel}
+\usepackage[utf8x]{inputenc}  % pro unicode UTF-8
+\usepackage{amssymb}
+\usepackage{textcomp}
+
+
+
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,240mm},
+ left=20mm,
+ top=25mm,
+}
+
+
+
+\usepackage{times}
+\usepackage{titlesec}
+
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\fontsize{11}{13}\bfseries}
+
+\begin{document}
+
+\begin{flushleft}
+
+{\tt
+\noindent Dokumentace úlohy JSN: JSN2XML v PHP do IPP 2016/2017 \linebreak
+Jméno a příjmení: Adrián Tomašov \linebreak
+Login: xtomas32 \linebreak
+}
+\end{flushleft}
+\section{  Introduction}
+
+The task was to create a script which converts XML format to JSON according to RFC and with possible adjustments of the
+final result. It was necessary to keep in mind that these languages have different standards and do not accept the same
+characters. Therefore it was necessary to replace malicious characters from data structure, otherwise it would break the
+consistence of XML.
+
+
+\section{Implementation}
+
+Because of my little knowledge of PHP language I used numerous minor functions to make it easier to implement the solution of this problem without using system libraries to encode XML files.
+
+\subsection{Argument Parser}
+
+I created my own class Parser which helped me to receive and verify arguments, because standard function 
+{\tt getopt()} 
+did not meet the requirements for this project. In the main function I created an instance of a class Parser and filled it with known arguments according to required specifics. Then I verified and loaded line arguments and at the end I had to check all dependencies.
+
+\subsection{JSON decode}
+
+With using {\tt json\_decode()} I decoded input json file string read from input file. The result from this step was a tree structure consisted of following: associative arrays, object(stdClass) and encoded data. After this the program was ready to encode data to XML format.
+
+\subsection{Conversion}
+Especially in this part I used many minor functions to help me manage challenges connected with converting to XML format with adjustable output format. I recursively went through the data tree structure read from {\tt json\_decode()} and with using minor functions I checked and encoded the data. 
+
+
+The name of the recursive function that I wrote was {\tt encode\_xml()}. Main function arguments were (data structure, parser data and few other subsidiary arguments). I iterated over data structure which was in {\tt key} $\Rightarrow$ {\tt value} format. If value was array or object(stdClass) I called this function on current value. 
+
+If value was plain data I called the function {\tt ncode\_data()} with key and values as parameters which returned the string with encoded data according to input arguments. 
+
+\subsection{Malicious characters}
+There are several characters that cause inconsistency of XML formatted file. Those characters are: $< , >, \&, ",'$ 
+
+I needed to create a function that substituted these malicious characters with string that was set with argument {\tt -h} or substituted with an alternative form that would work for XML. However, this did not automatically mean that the word was correct, therefore I also had to create another function for verifying key and value to see if these were acceptable for XML standard.
+\section{Extensions}
+
+\subsection{JPD}
+
+This extension was solved with using function {\tt str\_pad()}, which filled {\tt size=\verb!"001"!} attribute required size. Number of elements in array together with {\tt --start} switch made maximum possible number in attribute {\tt size}. Then I used function {\tt strlen()} to obtain size of each value.
+
+
+\section{Conclusion}
+
+As required in the beginning I was supposed to create a program to convert JSON file format to XML file format with possible adjustments of the final results according to user needs. When creating this program I had to write several functions to remove the inconsistency between both languages (malicious characters in XML). Program also contains several minor functions that help user to adjust final XML format.
+
+\end{document}

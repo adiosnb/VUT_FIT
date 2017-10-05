@@ -1,0 +1,171 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[czech]{babel}
+\usepackage[utf8x]{inputenc}  % pro unicode UTF-8
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphics}
+\usepackage{epstopdf}
+\usepackage{multirow}
+\usepackage{caption}
+\usepackage{picture}
+\usepackage[linesnumbered,longend,ruled]{algorithm2e}
+\usepackage{rotating}
+\usepackage{pdflscape}
+\usepackage{listings}
+%\usepackage[IL2]{fontenc}
+
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={160mm,240mm},
+ left=25mm,
+ top=30mm,
+}
+
+\usepackage{times}
+
+
+\begin{document}
+
+\begin{center}
+\pagenumbering{gobble}
+\thispagestyle{empty}
+\Huge
+\textsc{Vysoké učení technické v Brně\\
+\huge Fakulta informačních technologií\\}
+
+\vspace{\stretch{0.382}}
+\LARGE IPK - Počítačové komunikace a sítě\\
+\Huge ARP - scanner
+\vspace{\stretch{0.618}}
+\end{center}
+{\LARGE \today \hfill Adrián Tomašov}
+\pagebreak
+
+\pagenumbering{roman}
+%OBSAH
+\tableofcontents
+\pagebreak
+
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+
+\section{Abstrakt}
+Cieľom tohto projektu je vytvoriť aplikáciu na skenovanie siete komunikujúcu prostredníctvom BSD socketov. Aplikácia bude pomocou ARP protokolu schopná skenovať lokálnu sieť, objaviť MAC adresy existujúcich zariadení a určiť ich mapovanie na IPv4 a IPv6 adresy. 
+
+Pomocou argumentov príkazového riadku bude možné zadať sieťové rozhranie, na ktorom má skenovanie prebehnúť a súbor, do ktorého bude zapísaný výstup programu v~predpísanom formáte.
+
+\section{Mapovanie IP adries na MAC adresy}
+Pri sieťovej komunikácií je nevyhnutné prekladať IP adresy, pomocou, ktorých sa komunikuje na sieťovej vrstve na hardvérové (MAC) adresy, využívané na linkovej vrstve. Na tento účel existuje viacero protokolov a metód používaných IP verzie 4 a 6.
+
+\subsection{ARP}
+Address Resolution Protocol (ARP) je využívaný IPv4 na mapovanie IP adries na MAC adresy, ktoré sa používajú na linkovej vrstve. Protokolu ARP je venované RFC 826 \cite{arp}. Správy typu ARP request sú zasielané na broadcastovú IP adresu. Zariadenie, ktoré vlastní požadovanú adresu, (prípadne zariadenie, ktoré je súži ako jeho proxy) pošle odpoveď formou správy ARP reply.
+
+\subsection{Mapovanie adries v~IPv6}
+Na rozdiel od IPv4 je v~IPv6 na preklad adries používaný ICMPv6 protokol konkrétne správa \emph{Neighbor Solicitation}, ktorá je opísaná v~RFC 4861 \cite{ns}. Funguje na princípe výmeny správ s~dotazom na MAC adresy susedných uzlov v~lokálnej sieti. 
+
+IPv6 ponúka výrazne väčší adresný priestor ako je to u~IPv4. Najpoužívanejší prefix pre IPv6 siete je \emph{64}. To znamená $2^{64} = 18446744073709551616$ možných IPv6 adries v~sieti. Použitie podobnej metódy ako pri IPv4 by malo neakceptovateľnú časovú náročnosť. Existuje množstvo rôznych metód ako skenovať IPv6 sieť, ako je priblížené v~RFC 7707. \cite{net_rec} V~tomto projekte sú použité 2 metódy s~nižšou časovú náročnosťou.
+
+\subsection{Multicast ping}
+Základom tejto metódy je \emph{icmpv6 echo request} na adresu \emph{FF02::1}. Táto adresa predstavuje all nodes multicast, čiže správa sa rozpošle všetkým zariadeniam v sieti. \cite{multicast} Väčšina normálnych systémov na túto správu odpovie (okrem Windows) a z odpovedí získame IPv6 a MAC adresy zariadení.
+
+\subsection{Well-known ports}  
+Hlavnou myšlienkou tohto typu získavania informácií je predpoklad, že sa v sieti nachádzajú sieťové prvky, ktoré majú IPv6 adresu podľa využitia (napríklad http-server $\rightarrow$ fe80::80, default-gateway $\rightarrow$ fe80::1, a pod.).
+Na tieto adresy sa pošle \emph{Neighbor Solicitation} správa. Na rozdiel od \emph{echo request}, na tento typ správy odpovedá každé zariadenie v sieti.
+
+
+
+\section{Návrh a implementácia}
+
+
+\subsection{IPv4}
+Program v~prvom kroku zistí IPv4 adresu danej sieťovej karty a vypočíta adresný rozsah. Následne pošle ARP request na všetky IPv4 adresy v~danej sieti. Všetky potrebné dátové typy sú definované v~\emph{NetStruct.h}, pretože hlavička ARP protokolu je v~kerneli odstránená podmieneným prekladom.
+
+
+\subsection{Trieda Scanner}
+Základom celého programu je trieda Scanner, v ktorej sú implementované funkcie pre prístup k systé\-movým informáciam o sieťovej karte, a práca so socketom. Pre správnu funkciu objektu danej triedy je nutné nastaviť názov portu, ktorý je možno vidieť vo výstupe príkazu \emph{ip l}. 
+
+\subsubsection{Socket}
+Táto trieda používa RAW socket, pretože umožňuje priamy prístup k dátam na sieťovej karte bez špecifi\-kovaného protokolu na štvrtej vrstve OSI modelu. Táto vlastnosť je využívaná pri správach ARP, pretože ARP je protokol druhej vrstvy.
+
+\begin{lstlisting}
+    if((sock_des = socket(PF_PACKET, SOCK_RAW,htons(ETH_P_ALL))) < 0 ) {
+        throw "error open socket";
+    }
+\end{lstlisting}
+
+\subsubsection{Scanning}
+Všetko metódy skenovania sú spúšťané paralelne pomocou \emph{std::thread}. Po spustení týcho threadov sa čaká konštantný čas.
+
+\subsubsection{Listener}
+Listener je metóda, ktorá prijíma správy zo socketu, ktoré prichádzajú na sieťovú kartu. Ak je prijatá správa typu \emph{ARP Reply} alebo \emph{icmpv6}, uloží IPv4/6 a MAC adresu do vnútornej databázy. Hlavné telo funkcie je vo \verb! while(1){} ! cykle, preto je táto metóda v samostatnom threade. Po uplynutí vopred stanoveného času sa na tento thread aplikuje metóda \emph{detach()} a pokračuje sa k ukončeniu programu.
+
+\section{XML}
+Formát výstupu je zapísaný v tvare XML do súbora, ktorého názov je zadaný na vstupe programu za prepínačom \emph{-f}.
+
+Pre lepšiu kompatibilitu rôznych linuxových systémov nie je použitá žiadna knižnica, ktorá preklada dátové štruktúry do XML. Preklad vnútornej štruktúry do formátu XML zabezpečuje metóda \emph{xml\_encode()} z triedy \emph{Devices}. Táto trieda predstavuje databázu všetkých nájdených zariadení v sieti. Ukladá si IPv4, IPv6 a MAC adresu o danom zariadení.
+
+\section{Demo}
+
+\subsection{demo 1}
+\begin{lstlisting}
+isa2015@isa2015:~/fit/ipk/proj2$ sudo ./ipk-scanner -i eth0 -f ipv4.xml
+isa2015@isa2015:~/fit/ipk/proj2$ cat ipv4.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<devices>
+  <host mac="5254.0012.3500">
+    <ipv4>10.0.2.2</ipv4>
+  </host>
+  <host mac="0800.27f5.108c">
+    <ipv4>10.0.2.3</ipv4>
+  </host>
+  <host mac="0800.27c7.bab4">
+    <ipv4>10.0.2.4</ipv4>
+  </host>
+  <host mac="0800.27dd.b2ad">
+    <ipv4>10.0.2.5</ipv4>
+  </host>
+  <host mac="0800.270d.7ef2">
+    <ipv4>10.0.2.6</ipv4>
+  </host>
+  <host mac="0800.27cc.7698">
+    <ipv4>10.0.2.15</ipv4>
+  </host>
+</devices>
+isa2015@isa2015:~/fit/ipk/proj2$ 
+
+\end{lstlisting}
+
+\subsection{demo 2}
+\begin{lstlisting}
+root@isa2015:/home/isa2015/fit/ipk/proj2# ./ipk-scanner-with-ipv6 -i eth1 -f ipv6.xml
+isa2015@isa2015:~/fit/ipk/proj2$ cat ipv6.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<devices>
+  <host mac="0a00.2700.0000">
+    <ipv4>192.168.56.1</ipv4>
+    <ipv6>fe80::800:27ff:fe00:0</ipv6>
+  </host>
+  <host mac="0800.270f.2fe4">
+    <ipv4>192.168.56.102</ipv4>
+    <ipv6>fe80::a00:27ff:fe0f:2fe4</ipv6>
+  </host>
+  <host mac="0800.275d.bad1">
+    <ipv4>192.168.56.100</ipv4>
+  </host>
+  <host mac="0800.27a9.1bdb">
+    <ipv6>fe80::a00:27ff:fea9:1bdb</ipv6>
+  </host>
+</devices>
+
+\end{lstlisting}
+
+\pagebreak
+\bibliographystyle{czplain}
+\bibliography{liter}
+
+
+\end{document}

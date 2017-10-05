@@ -1,0 +1,7 @@
+V3 3
+FL C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd 2016/10/23.17:05:29 P.20131013
+EN work/ledc8x8 1477235139 FL C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd \
+      PB ieee/std_logic_1164 1381692176 PB ieee/std_logic_arith 1381692177 \
+      PB ieee/STD_LOGIC_UNSIGNED 1381692179
+AR work/ledc8x8/main 1477235140 \
+      FL C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd EN work/ledc8x8 1477235139

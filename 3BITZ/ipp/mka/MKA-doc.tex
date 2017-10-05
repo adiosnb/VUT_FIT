@@ -1,0 +1,86 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[czech]{babel}
+\usepackage[utf8x]{inputenc}  % pro unicode UTF-8
+\usepackage{amssymb}
+\usepackage{textcomp}
+
+
+
+\usepackage{geometry}
+\geometry{
+ a4paper,
+ total={170mm,240mm},
+ left=20mm,
+ top=25mm,
+}
+
+
+
+\usepackage{times}
+\usepackage{titlesec}
+
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\fontsize{11}{13}\bfseries}
+\titleformat*{\subsubsection}{\fontsize{11}{13}\bfseries}
+
+\begin{document}
+
+\begin{flushleft}
+{\tt
+	\noindent Dokumentace úlohy MKA: Minimalizace konečného automatu v Python3.6 do IPP 2016/2017 \linebreak
+	Jméno a příjmení: Adrián Tomašov \linebreak
+	Login: xtomas32 \linebreak
+}
+\end{flushleft}
+
+\section{Introduction}
+
+This project is about minimizing of well specified automata. Program reads automata from stdin/file in UTF-8 encoding, check preconditions and write automata in standardized format to stdout/file. Main functions of this program are {\tt --find-non-finishing} state of well specified automata and {\tt --minimize} which do a minimizing algorithm specified in IFJ lectures.
+
+If error occurs, program will end with specific error code.
+\begin{itemize}
+	\item \textbf{1} - wrong line arguments/wrong combination of arguments
+	\item \textbf{60} - automata syntax error
+	\item \textbf{61} - automata semantic error
+	\item \textbf{62} - automata is not well specified
+\end{itemize} 
+
+\section{Implementation}
+
+\subsection{Argument parser}
+For parsing line arguments if used class {\tt argaprser} . Argparser doesn't correspond with all project specifications. For bool parameters is used action {\tt count} and checked if numbers is not bigger than 1. For parameters with values is used action {\tt append} and checked if created list is not bigger than 2. For parameters {\tt \-m} and {\tt \-f} is created {\tt mutually\_exclusive\_group}, because they cannot be set together.
+
+Argparser might have different error codes. To solve this problem, {\tt SystemExit} exception is caught and {\tt exit(1)} is called.
+
+\subsection{Automata parser}
+
+
+
+\subsection{class Automata}
+
+This class is representing well specified finite state automata. Interaction with this method is split into two concepts. 
+
+In first concept, automata is being filled up with states, rules , letters , end states and start state. There are many add methods implemented to support this interaction.
+
+
+In second concept, automata is checked if is well specified. If result if check is OK, methods {\tt find\_non\_finishing()}, {\tt minimize()} can be used.
+
+\subsubsection{minimize}
+Algorithm from lecture IFJ about Automata is implemented here. Set of two sets of states is created. Then new states are created. After this step, rules are transformed to correspond with new states. After all these steps internal ADT which stores rules, states, etc. 
+
+
+\subsubsection{find non finishing} 
+Depth first search algorithm of artificial intelligence is used to find if way between state A and B. Find non finishing state method is just simple iteration through every states and check if exist way from $current state_{i}$ and set of end states. If way doesn't exists, $current state_{i}$ is appended to set of non finishing states. 
+
+
+\subsection{Exceptions}
+Exceptions are used to handling error behaviour of automata parser or automata object itself. Exception are caught, error message is printed to stderr and {\tt exit()} is called with specific error code according to error type. 
+
+There is one special exception object called {\tt AutomataEndOfSplitting}. This exception is used in minimizing algorithm, when there is not possible next merge of state.
+
+\section{Conclusion}
+
+Minimizing of finite state automata is implemented almost successfully. Algorithms correspond to patterns. Implementing this project in python was helpful, because python has inner implementation of sets and lists with great method as well. 
+
+\end{document}

@@ -1,0 +1,370 @@
+Release 14.7 - xst P.20131013 (nt)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to build/fpga
+Parameter xsthdpdir set to build/fpga
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.06 secs
+ 
+--> 
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "build/fpga/project.prj"
+Input Format                       : mixed
+
+---- Target Parameters
+Output File Name                   : "build/fpga/project.ngc"
+Output Format                      : NGC
+Target Device                      : xc3s50-4-pq208
+
+---- Source Options
+Top Module Name                    : ledc8x8
+
+---- General Options
+Optimization Goal                  : SPEED
+Optimization Effort                : 1
+Library Search Order               : build/fpga/project.lso
+RTL Output                         : yes
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling vhdl file "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" in Library work.
+Entity <ledc8x8> compiled.
+WARNING:HDLParsers:1406 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" Line 107. No sensitivity list and no wait in the process
+Entity <ledc8x8> (Architecture <main>) compiled.
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for entity <ledc8x8> in library <work> (architecture <main>).
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing Entity <ledc8x8> in library <work> (Architecture <main>).
+INFO:Xst:1561 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" line 55: Mux is complete : default of case is discarded
+INFO:Xst:1561 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" line 82: Mux is complete : default of case is discarded
+INFO:Xst:1561 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" line 100: Mux is complete : default of case is discarded
+INFO:Xst:1561 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" line 111: Mux is complete : default of case is discarded
+WARNING:Xst:819 - "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd" line 107: One or more signals are missing in the process sensitivity list. To enable synthesis of FPGA/CPLD hardware, XST will assume that all necessary signals are present in the sensitivity list. Please note that the result of the synthesis may differ from the initial design specification. The missing signals are:
+   <MY_CLK_CNT>, <LETTER_A>, <LETTER_T>
+INFO:Xst:2679 - Register <MY_CLK> in unit <ledc8x8> has a constant value of 1 during circuit operation. The register is replaced by logic.
+Entity <ledc8x8> analyzed. Unit <ledc8x8> generated.
+
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <ledc8x8>.
+    Related source file is "C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd".
+WARNING:Xst:1780 - Signal <CNT> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+    Found 8x16-bit ROM for signal <MY_CLK_CNT_10_8$rom0000>.
+    Found 3-bit adder for signal <LETTER_CNT$addsub0000> created at line 67.
+    Found 25-bit register for signal <MY_CLK_CNT>.
+    Found 25-bit adder for signal <MY_CLK_CNT$add0000> created at line 37.
+    Summary:
+	inferred   1 ROM(s).
+	inferred  25 D-type flip-flop(s).
+	inferred   2 Adder/Subtractor(s).
+Unit <ledc8x8> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# ROMs                                                 : 1
+ 8x16-bit ROM                                          : 1
+# Adders/Subtractors                                   : 1
+ 25-bit adder                                          : 1
+# Registers                                            : 25
+ 1-bit register                                        : 25
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# ROMs                                                 : 1
+ 8x16-bit ROM                                          : 1
+# Adders/Subtractors                                   : 1
+ 25-bit adder                                          : 1
+# Registers                                            : 25
+ Flip-Flops                                            : 25
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:2677 - Node <MY_CLK_CNT_24> of sequential type is unconnected in block <ledc8x8>.
+
+Optimizing unit <ledc8x8> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 24
+ Flip-Flops                                            : 24
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : build\fpga\project.ngr
+Top Level Output File Name         : build/fpga/project.ngc
+Output Format                      : NGC
+Optimization Goal                  : SPEED
+Keep Hierarchy                     : no
+
+Design Statistics
+# IOs                              : 18
+
+Cell Usage :
+# BELS                             : 86
+#      GND                         : 1
+#      INV                         : 2
+#      LUT1                        : 23
+#      LUT3                        : 3
+#      LUT4                        : 9
+#      MUXCY                       : 23
+#      VCC                         : 1
+#      XORCY                       : 24
+# FlipFlops/Latches                : 24
+#      FDC                         : 8
+#      FDE                         : 16
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 17
+#      IBUF                        : 1
+#      OBUF                        : 16
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s50pq208-4 
+
+ Number of Slices:                       19  out of    768     2%  
+ Number of Slice Flip Flops:             24  out of   1536     1%  
+ Number of 4 input LUTs:                 37  out of   1536     2%  
+ Number of IOs:                          18
+ Number of bonded IOBs:                  18  out of    124    14%  
+ Number of GCLKs:                         1  out of      8    12%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+SMCLK                              | BUFGP                  | 24    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+-----------------------------------+------------------------+-------+
+Control Signal                     | Buffer(FF name)        | Load  |
+-----------------------------------+------------------------+-------+
+RESET                              | IBUF                   | 8     |
+-----------------------------------+------------------------+-------+
+
+Timing Summary:
+---------------
+Speed Grade: -4
+
+   Minimum period: 5.362ns (Maximum Frequency: 186.498MHz)
+   Minimum input arrival time before clock: 4.556ns
+   Maximum output required time after clock: 9.249ns
+   Maximum combinational path delay: 9.357ns
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'SMCLK'
+  Clock period: 5.362ns (frequency: 186.498MHz)
+  Total number of paths / destination ports: 300 / 24
+-------------------------------------------------------------------------
+Delay:               5.362ns (Levels of Logic = 24)
+  Source:            MY_CLK_CNT_1 (FF)
+  Destination:       MY_CLK_CNT_23 (FF)
+  Source Clock:      SMCLK rising
+  Destination Clock: SMCLK rising
+
+  Data Path: MY_CLK_CNT_1 to MY_CLK_CNT_23
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDC:C->Q              1   0.720   1.140  MY_CLK_CNT_1 (MY_CLK_CNT_1)
+     LUT1:I0->O            1   0.551   0.000  Madd_MY_CLK_CNT_add0000_cy<1>_rt (Madd_MY_CLK_CNT_add0000_cy<1>_rt)
+     MUXCY:S->O            1   0.500   0.000  Madd_MY_CLK_CNT_add0000_cy<1> (Madd_MY_CLK_CNT_add0000_cy<1>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<2> (Madd_MY_CLK_CNT_add0000_cy<2>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<3> (Madd_MY_CLK_CNT_add0000_cy<3>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<4> (Madd_MY_CLK_CNT_add0000_cy<4>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<5> (Madd_MY_CLK_CNT_add0000_cy<5>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<6> (Madd_MY_CLK_CNT_add0000_cy<6>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<7> (Madd_MY_CLK_CNT_add0000_cy<7>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<8> (Madd_MY_CLK_CNT_add0000_cy<8>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<9> (Madd_MY_CLK_CNT_add0000_cy<9>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<10> (Madd_MY_CLK_CNT_add0000_cy<10>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<11> (Madd_MY_CLK_CNT_add0000_cy<11>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<12> (Madd_MY_CLK_CNT_add0000_cy<12>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<13> (Madd_MY_CLK_CNT_add0000_cy<13>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<14> (Madd_MY_CLK_CNT_add0000_cy<14>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<15> (Madd_MY_CLK_CNT_add0000_cy<15>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<16> (Madd_MY_CLK_CNT_add0000_cy<16>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<17> (Madd_MY_CLK_CNT_add0000_cy<17>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<18> (Madd_MY_CLK_CNT_add0000_cy<18>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<19> (Madd_MY_CLK_CNT_add0000_cy<19>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<20> (Madd_MY_CLK_CNT_add0000_cy<20>)
+     MUXCY:CI->O           1   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<21> (Madd_MY_CLK_CNT_add0000_cy<21>)
+     MUXCY:CI->O           0   0.064   0.000  Madd_MY_CLK_CNT_add0000_cy<22> (Madd_MY_CLK_CNT_add0000_cy<22>)
+     XORCY:CI->O           1   0.904   0.000  Madd_MY_CLK_CNT_add0000_xor<23> (MY_CLK_CNT_add0000<23>)
+     FDE:D                     0.203          MY_CLK_CNT_23
+    ----------------------------------------
+    Total                      5.362ns (4.222ns logic, 1.140ns route)
+                                       (78.7% logic, 21.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'SMCLK'
+  Total number of paths / destination ports: 16 / 16
+-------------------------------------------------------------------------
+Offset:              4.556ns (Levels of Logic = 2)
+  Source:            RESET (PAD)
+  Destination:       MY_CLK_CNT_22 (FF)
+  Destination Clock: SMCLK rising
+
+  Data Path: RESET to MY_CLK_CNT_22
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            17   0.821   1.345  RESET_IBUF (RESET_IBUF)
+     INV:I->O             16   0.551   1.237  RESET_inv1_INV_0 (RESET_inv)
+     FDE:CE                    0.602          MY_CLK_CNT_22
+    ----------------------------------------
+    Total                      4.556ns (1.974ns logic, 2.582ns route)
+                                       (43.3% logic, 56.7% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'SMCLK'
+  Total number of paths / destination ports: 50 / 16
+-------------------------------------------------------------------------
+Offset:              9.249ns (Levels of Logic = 2)
+  Source:            MY_CLK_CNT_10 (FF)
+  Destination:       LED<7> (PAD)
+  Source Clock:      SMCLK rising
+
+  Data Path: MY_CLK_CNT_10 to LED<7>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q             12   0.720   1.457  MY_CLK_CNT_10 (MY_CLK_CNT_10)
+     LUT3:I0->O            2   0.551   0.877  LED<7>1 (LED_7_OBUF)
+     OBUF:I->O                 5.644          LED_7_OBUF (LED<7>)
+    ----------------------------------------
+    Total                      9.249ns (6.915ns logic, 2.334ns route)
+                                       (74.8% logic, 25.2% route)
+
+=========================================================================
+Timing constraint: Default path analysis
+  Total number of paths / destination ports: 8 / 8
+-------------------------------------------------------------------------
+Delay:               9.357ns (Levels of Logic = 3)
+  Source:            RESET (PAD)
+  Destination:       ROW<0> (PAD)
+
+  Data Path: RESET to ROW<0>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            17   0.821   1.540  RESET_IBUF (RESET_IBUF)
+     LUT4:I1->O            1   0.551   0.801  ROW<0>1 (ROW_0_OBUF)
+     OBUF:I->O                 5.644          ROW_0_OBUF (ROW<0>)
+    ----------------------------------------
+    Total                      9.357ns (7.016ns logic, 2.341ns route)
+                                       (75.0% logic, 25.0% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 4.00 secs
+Total CPU time to Xst completion: 3.91 secs
+ 
+--> 
+
+Total memory usage is 201888 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    4 (   0 filtered)
+Number of infos    :    5 (   0 filtered)
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMPORTANT: This is an internal file that has been generated
+     by the Xilinx ISE software.  Any direct editing or
+     changes made to this file may result in unpredictable
+     behavior or data corruption.  It is strongly advised that
+     users do not edit the contents of this file. -->
+<messages>
+<msg type="warning" file="HDLParsers" num="1406" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; Line <arg fmt="%d" index="2">107</arg>. No sensitivity list and no wait in the process
+</msg>
+
+<msg type="info" file="Xst" num="1561" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; line <arg fmt="%d" index="2">55</arg>: Mux is complete : default of case is discarded
+</msg>
+
+<msg type="info" file="Xst" num="1561" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; line <arg fmt="%d" index="2">82</arg>: Mux is complete : default of case is discarded
+</msg>
+
+<msg type="info" file="Xst" num="1561" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; line <arg fmt="%d" index="2">100</arg>: Mux is complete : default of case is discarded
+</msg>
+
+<msg type="info" file="Xst" num="1561" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; line <arg fmt="%d" index="2">111</arg>: Mux is complete : default of case is discarded
+</msg>
+
+<msg type="warning" file="Xst" num="819" delta="new" >&quot;<arg fmt="%s" index="1">C:/FitkitSVN/apps/demo/xtomas32/fpga/ledc8x8.vhd</arg>&quot; line <arg fmt="%d" index="2">107</arg>: One or more signals are missing in the process sensitivity list. To enable synthesis of FPGA/CPLD hardware, XST will assume that all necessary signals are present in the sensitivity list. Please note that the result of the synthesis may differ from the initial design specification. The missing signals are:
+<arg fmt="%s" index="3">&lt;MY_CLK_CNT&gt;, &lt;LETTER_A&gt;, &lt;LETTER_T&gt;</arg>
+</msg>
+
+<msg type="info" file="Xst" num="2679" delta="old" >Register &lt;<arg fmt="%s" index="1">MY_CLK</arg>&gt; in unit &lt;<arg fmt="%s" index="2">ledc8x8</arg>&gt; has a constant value of <arg fmt="%s" index="3">1</arg> during circuit operation. The register is replaced by logic.
+</msg>
+
+<msg type="warning" file="Xst" num="1780" delta="old" >Signal &lt;<arg fmt="%s" index="1">CNT</arg>&gt; is never used or assigned. This unconnected signal will be trimmed during the optimization process.
+</msg>
+
+<msg type="warning" file="Xst" num="2677" delta="new" >Node &lt;<arg fmt="%s" index="1">MY_CLK_CNT_24</arg>&gt; of sequential type is unconnected in block &lt;<arg fmt="%s" index="2">ledc8x8</arg>&gt;.
+</msg>
+
+</messages>
+
