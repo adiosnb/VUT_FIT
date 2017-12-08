@@ -1,0 +1,11 @@
+all: manual
+
+manual: manual.tex
+	latex manual
+	latex manual
+	dvips -t a4 manual.dvi
+	ps2pdf -sPAPERSIZE=a4  manual.ps
+
+clean:
+	rm -f manual.log manual.dvi manual.aux manual.ps manual.synctex.gz manual.b* manual.toc
+

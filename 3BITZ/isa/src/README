@@ -1,0 +1,76 @@
+# POP3 server
+
+Táto aplikácia slúži na sprístupnenie mailovej zložky pomocou protokolu POP3.
+Predpokladá sa, že mailová zložka je v štandardnom tvare maildir s podpriečinkami
+***cur*** a ***new***, a maily v nich spĺňajú štandardný formát ***IMF***. Modul
+pre výpočet MD5 hash bol stiahnutý z internetu.
+
+## Argumenty
+* h (help) - voliteľný parameter, pri jeho zadaní sa vypíše nápoveda a program sa ukončí
+* a (auth file) - cesta k súboru s prihlasovacími údajmi
+* c (clear pass) - voliteľný parameter, pri zadaní server akceptuje autentizačnú metódu, 
+ktorá prenáša heslo v nešifrovanej podobe (inak prijíma iba heslá v šifrovanej podobe - hash)
+* p (port) - číslo portu na ktorom bude bežať server
+* d (directory) - cesta do zložky Maildir (napr. ~/Maildir/)
+* r (reset) - voliteľný parameter, server vymaže všetky svoje pomocné súbory a emaily z Maildir
+ adresárovej štruktúry vráti do stavu, ako keby proces popser nebol nikdy spustený (netýka sa 
+ časových pečiatok, iba názvov a umiestnení súborov) (týka sa to len emailov, ktoré sa 
+ v adresárovej štruktúre nachádzajú).
+
+## Režimy behu
+Tento program ponúka 3 režimy spustenia:
+1. ***Výpis nápovedy*** - ak sa v argumentoch objaví parameter `-h`, vypíše sa nápoveda k programu
+2. ***Reset*** - ak sa v argumentoch objaví parameter `-r`, spraví sa reset pop# servera. To
+znamená, že sa súbory, ktoré boli presunuté pop3 serverom a neboli vymazané presunú na pôvodné
+miesto.
+3. ***Spustenie servera*** - v tomto prípade sú povinné parametre `-a`, `-p` a `-d`. K ním sa môzu
+pripojit voliteľné paramatre `-c` a `-r`.
+```sh
+    ./popser -a <auth-file> -p <port> -d <MailDirectory> [-c] [-r]
+```
+
+### Príklad spustenia servera
+```
+    ./popser -p 25270 -c -a authfile -d Maildir2
+```
+
+
+## Rozšírenia
+* TOP
+
+
+## Odkazy
+* [POP3](https://tools.ietf.org/html/rfc1939)
+* [IMF](https://tools.ietf.org/html/rfc5322)
+* [MD5](http://www.zedwood.com/article/cpp-md5-function)
+
+## Súbory
+* ArgParser.cpp
+* ArgParser.h
+* Connection.cpp
+* Connection.h
+* debug.h
+* doc.pdf
+* Exception.cpp
+* Exception.h
+* HostConnection.cpp
+* HostConnection.h
+* Host.cpp
+* Host.h
+* MailDir.cpp
+* MailDir.h
+* MailDirLogger.cpp
+* MailDirLogger.h
+* MailMsg.cpp
+* MailMsg.h
+* main.cpp
+* Makefile
+* md5.cpp - kopírovaný modul z internetu
+* md5.h - kopírovaný modul z internetu
+* MsgBuffer.cpp
+* MsgBuffer.h
+* Pop3Server.cpp
+* Pop3Server.h
+* README.md
+* Server.cpp
+* Server.h
